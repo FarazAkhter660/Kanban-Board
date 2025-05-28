@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import DragDropContext from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import Column from './Column';
 
 export default function KanbanBoard({ children }) {
     const [completedTasks, setCompletedTasks] = useState([]);
@@ -32,7 +33,7 @@ export default function KanbanBoard({ children }) {
             ))}
           </div>
         </div>
-
+            <Column title={"TO DO"} task={inProgressTasks} id={"1"} />
       </div>
     </DragDropContext>
   );
