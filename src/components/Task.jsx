@@ -5,27 +5,33 @@ import { Avatar } from "antd";
 
 const TaskContainer = styled.div`
   border-radius: 12px;
-  padding: 16px;
+  padding: clamp(12px, 2vw, 16px);
   color: #333;
   margin-bottom: 12px;
-  min-height: 120px;
   margin-left: 10px;
   margin-right: 10px;
+  min-height: 120px;
   background-color: ${(props) => bgcolorChange(props)};
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  justify-content: space-between;
   transition: all 0.2s ease;
   border: 1px solid #e0e0e0;
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
+
+  @media (max-width: 480px) {
+    padding: 12px;
+    margin: 8px;
+  }
 `;
 
 const TextContent = styled.div`
-  font-size: 14px;
+  font-size: clamp(13px, 2vw, 14px);
   line-height: 1.4;
   color: #444;
 `;
@@ -35,6 +41,14 @@ const Icons = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 4px 0;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 `;
 
 const TaskId = styled.span`
@@ -66,9 +80,7 @@ export default function Task({ task, index }) {
           isDragging={snapshot.isDragging}
         >
           <div style={{ display: "flex", justifyContent: "start" }}>
-            <TaskId>
-              #{task.id}
-            </TaskId>
+            <TaskId>#{task.id}</TaskId>
           </div>
           <div style={{ margin: "8px 0" }}>
             <TextContent>{task.title}</TextContent>
@@ -83,8 +95,13 @@ export default function Task({ task, index }) {
             </div>
             <Avatar
               onClick={() => console.log(task)}
-              src={"https://joesch.moe/api/v1/random?key=" + task.id}
-              style={{ border: "2px solid #fff", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}
+              src={`https://joesch.moe/api/v1/random?key=${task.id}`}
+              style={{
+                border: "2px solid #fff",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                width: "32px",
+                height: "32px",
+              }}
             />
           </Icons>
           {provided.placeholder}
