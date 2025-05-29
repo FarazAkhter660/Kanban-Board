@@ -1,68 +1,68 @@
-import React from 'react'
-import { Droppable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import React from "react";
+import styled from "styled-components";
+import Task from "./Task";
+import { Droppable } from "react-beautiful-dnd";
 
-const ColumnContainer = styled.div`
-  width: 300px;
-  min-height: 100px;
-  overflow-y: scroll;
-  display: flex;
+const Container = styled.div`
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  width: 350px;
+  height: 80vh;
+  overflow-y: auto;
+  -ms-overflow-style: none;
   scrollbar-width: none;
-  background-color: #f0f0f0;
-  border-radius: 3px;
-  padding: 16px;
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 12px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
-const ColumnTitle = styled.h3`
+const Title = styled.h3`
+  padding: 16px;
+  margin: 0;
   text-align: center;
-  padding: 8px;
-  background-color: #e0e0e0;
+  font-weight: 600;
+  color: #333;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: ${props => 
+    props.title === "TO DO" ? "#e3f2fd" : 
+    props.title === "DONE" ? "#e8f5e9" : "#fff8e1"};
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 `;
 
 const TaskList = styled.div`
-  padding: 3px;
-  display: flex;
-  flex-grow: 1;
-  min-height: 100px;
+  padding: 12px;
   transition: background-color 0.2s ease;
-  background-color: #f9f9f9;
+  background-color: ${props => 
+    props.isDraggingOver ? "rgba(200, 200, 200, 0.3)" : "#f8f9fa"};
+  min-height: 100px;
 `;
 
-export default function Column({ title, task, id }) {
+export default function Column({ title, tasks, id }) {
   return (
-    <ColumnContainer>
-      <ColumnTitle
-        style={{
-          backgroundColor: '#e0e0e0',
-          position: 'sticky',
-        }}>
+    <Container className="column">
+      <Title title={title}>
         {title}
-      </ColumnTitle>
-
+      </Title>
       <Droppable droppableId={id}>
         {(provided, snapshot) => (
           <TaskList
             ref={provided.innerRef}
             {...provided.droppableProps}
             isDraggingOver={snapshot.isDraggingOver}
-            style={{
-              backgroundColor: '#f9f9f9',
-              minHeight: '100px',
-              padding: '3px',
-              display: 'flex',
-              flexDirection: 'column',
-            }}>
-            {task.map((item, index) => (
-              <div key={item.id} style={{ padding: '8px', marginBottom: '8px', backgroundColor: '#fff', borderRadius: '4px', boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)' }}>
-                {item.content}
-              </div>
+          >
+            {tasks.map((task, index) => (
+              <Task key={index} index={index} task={task} />
             ))}
             {provided.placeholder}
           </TaskList>
         )}
       </Droppable>
-    </ColumnContainer>
-  )
+    </Container>
+  );
 }
