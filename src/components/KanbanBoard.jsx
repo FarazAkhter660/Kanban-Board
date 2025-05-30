@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./Column";
 import { useMediaQuery } from "react-responsive";
-import Modal from "react-modal";
-
-Modal.setAppElement("#root");
 
 export default function Board() {
   const [completed, setCompleted] = useState([]);
@@ -103,7 +100,7 @@ export default function Board() {
       userId: 1,
       id: Date.now(),
       title: taskTitle,
-      completed: taskStatus === "2", 
+      completed: taskStatus === "2",
     };
     setNewState(taskStatus, newTask);
     closeModal();
@@ -122,7 +119,8 @@ export default function Board() {
         <div
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
+            flexDirection: isMobile ? "column" : "row",
             alignItems: "center",
             maxWidth: "1400px",
             margin: "0 auto 16px",
@@ -136,7 +134,7 @@ export default function Board() {
               fontWeight: "600",
             }}
           >
-            PROGRESS BOARD
+            Mini Kanban Board
           </h2>
           <button
             onClick={openModal}
@@ -175,68 +173,82 @@ export default function Board() {
         </div>
       </DragDropContext>
 
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add Task"
-        style={{
-          content: {
-            maxWidth: "400px",
-            margin: "auto",
-            padding: "20px",
-            borderRadius: "8px",
-            zIndex: 1000000,
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          },
-        }}
-      >
-        <h2 style={{ marginBottom: "12px" }}>Add New Task</h2>
-        <input
-          type="text"
-          placeholder="Task title"
-          value={taskTitle}
-          onChange={(e) => setTaskTitle(e.target.value)}
+      {modalIsOpen && (
+        <div
           style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
-          }}
-        />
-        <select
-          value={taskStatus}
-          onChange={(e) => setTaskStatus(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            marginBottom: "16px",
-            borderRadius: "4px",
-            border: "1px solid #ccc",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            zIndex: 1000,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <option value="1">BACKLOG</option>
-          <option value="3">IN REVIEW</option>
-          <option value="2">DONE</option>
-        </select>
-        <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-          <button onClick={closeModal} style={{ padding: "8px 14px" }}>
-            Cancel
-          </button>
-          <button
-            onClick={handleAddTask}
+          <div
             style={{
-              padding: "8px 14px",
-              backgroundColor: "#3f51b5",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "8px",
+              width: "90%",
+              maxWidth: "400px",
+              boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+              zIndex: 1001,
             }}
           >
-            Add
-          </button>
+            <h2 style={{ marginBottom: "12px" }}>Add New Task</h2>
+            <input
+              type="text"
+              placeholder="Task title"
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              style={{
+                width: "95%",
+                padding: "10px",
+                marginBottom: "10px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            />
+            <select
+              value={taskStatus}
+              onChange={(e) => setTaskStatus(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                marginBottom: "16px",
+                borderRadius: "4px",
+                border: "1px solid #ccc",
+              }}
+            >
+              <option value="1">BACKLOG</option>
+              <option value="3">IN PROGRESS
+              </option>
+              <option value="2">DONE</option>
+            </select>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+              <button onClick={closeModal} style={{ padding: "8px 14px" }}>
+                Cancel
+              </button>
+              <button
+                onClick={handleAddTask}
+                style={{
+                  padding: "8px 14px",
+                  backgroundColor: "#3f51b5",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "4px",
+                }}
+              >
+                Add
+              </button>
+            </div>
+          </div>
         </div>
-      </Modal>
+      )}
     </div>
   );
 }
