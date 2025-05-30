@@ -19,7 +19,7 @@ A simple and responsive Kanban board built with React. It supports task creation
 ##  Project Setup
 
 1. Clone the repo:
-   git clone https://github.com/FarazAkhter660/mini-kanban-board.git
+   git clone https://github.com/FarazAkhter660/kanban-board.git
    cd .\kanban-board\
 
 2. npm install
